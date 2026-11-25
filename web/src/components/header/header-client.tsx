@@ -50,6 +50,10 @@ export function HeaderClient({ difficultyLevel }: HeaderClientProps) {
                 width={115}
                 height={21}
               />
+              　　　　　　　　　
+              <span className="text-sm font-bold">
+                　　　　　　　　　＠北九州市 　　　　　　　　　
+              </span>
             </Link>
           </div>
 
