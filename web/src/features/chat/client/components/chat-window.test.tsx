@@ -244,7 +244,7 @@ describe("ChatWindow", () => {
 
     expect(
       await screen.findByRole("region", {
-        name: "国会や法案についてAIに質問する",
+        name: "北九州市議会や議案についてAIに質問する",
       })
     ).toBeInTheDocument();
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
