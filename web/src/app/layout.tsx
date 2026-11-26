@@ -26,15 +26,15 @@ const notoSerifJP = Noto_Serif_JP({
 
 const isDev = process.env.NODE_ENV === "development";
 const isStaging = process.env.VERCEL_TARGET_ENV === "staging";
-const siteTitle = "みらい議会｜チームみらい";
+const siteTitle = "みらい議会＠北九州市";
 const siteDescription =
-  "国会で今どんな法案が検討されているか、わかりやすく伝えるプラットフォーム";
-const siteName = "みらい議会";
+  "北九州市議会で今どんな議案が検討されているか、わかりやすく伝えるプラットフォーム";
+const siteName = "みらい議会＠北九州市";
 const ogImage = {
   url: "/ogp.jpg",
   width: 1200,
   height: 630,
-  alt: "みらい議会のOGPイメージ",
+  alt: "みらい議会＠北九州市のOGPイメージ",
 };
 
 export const metadata: Metadata = {
