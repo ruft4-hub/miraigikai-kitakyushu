@@ -181,13 +181,13 @@ describe("ChatWindow", () => {
       name: "モバイルAIチャット",
     });
     expect(dialog).toHaveStyle({ maxHeight: "640px" });
-    expect(screen.getAllByRole("button", { name: /何|法案/ })).toHaveLength(3);
+    expect(screen.getAllByRole("button", { name: /何|議案/ })).toHaveLength(3);
 
     await user.click(
-      screen.getByRole("button", { name: "みらい議会って何？" })
+      screen.getByRole("button", { name: "みらい議会＠北九州市って何？" })
     );
     expect(sendMessage).toHaveBeenCalledWith({
-      text: "みらい議会って何？",
+      text: "みらい議会＠北九州市って何？",
       metadata: {
         billContext: undefined,
         difficultyLevel: "normal",
