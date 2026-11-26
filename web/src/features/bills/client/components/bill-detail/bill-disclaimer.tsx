@@ -1,6 +1,5 @@
 import { LinkButton } from "@/components/top/link-button";
 import { EXTERNAL_LINKS } from "@/config/external-links";
-import { ManualRuby } from "@/lib/rubyful/manual-ruby";
 
 export function BillDisclaimer() {
   return (
@@ -9,12 +8,10 @@ export function BillDisclaimer() {
       <div className="space-y-3">
         <h3 className="text-sm font-bold text-black">掲載コンテンツについて</h3>
         <p className="text-xs leading-relaxed text-mirai-text-note">
-          掲載されている法案情報は、国会に提出された議案などの公開情報を基に、チームみらいがAIを活用しながら背景情報を整理したものです。掲載法案は主に、内閣提出法案（
-          <ManualRuby ruby="かくほう">閣法</ManualRuby>
-          ）を対象としております。
+          掲載されている議案情報は、北九州市議会などの公開情報を基に、AIを活用しながら背景情報を整理したものです。
         </p>
         <p className="text-xs leading-relaxed text-mirai-text-note">
-          「AI自動生成版」の記事は、AIが作成した解説を人によるレビューを経ずに掲載しています。「チームみらいの賛否」は党が作成しており、AI生成の対象ではありません。議員が提出した法案（議員立法）には、タイトル下に「議員立法」と表示しています。
+          AIによる解説には、不正確な情報が含まれる可能性があります。議案の詳細については、北九州市議会の公式資料をご確認ください。
         </p>
       </div>
 
