@@ -37,6 +37,9 @@ export async function BillDetailLayout({
           topicCount={0}
         />
         <Container>
+          <p className="mt-4 text-sm text-mirai-text-secondary">
+            現在は開発中のため、掲載議案は国会のサンプルデータです。北九州市議会の実際の議案ではありません。
+          </p>
           {/* 議案ステータス進捗 */}
           <div className="my-8">
             <BillStatusProgress

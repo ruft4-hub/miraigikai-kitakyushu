@@ -8,10 +8,10 @@ export function BillDisclaimer() {
       <div className="space-y-3">
         <h3 className="text-sm font-bold text-black">掲載コンテンツについて</h3>
         <p className="text-xs leading-relaxed text-mirai-text-note">
-          掲載されている議案情報は、北九州市議会などの公開情報を基に、AIを活用しながら背景情報を整理したものです。
+          現在は開発・検証段階のため、国会のサンプルデータを使用しています。正式運用に向けて、北九州市議会の公開資料を基にした情報掲載を準備しています。
         </p>
         <p className="text-xs leading-relaxed text-mirai-text-note">
-          AIによる解説には、不正確な情報が含まれる可能性があります。議案の詳細については、北九州市議会の公式資料をご確認ください。
+          サンプルの解説やAIの回答には、不正確な情報が含まれる可能性があります。実際の北九州市議会の議案については、市議会の公式資料をご確認ください。
         </p>
       </div>
 

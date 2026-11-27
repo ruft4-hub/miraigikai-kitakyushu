@@ -42,7 +42,7 @@ import { getBillsWithReportCounts } from "../loaders/get-bills-with-report-count
 import { getFeaturedTags } from "../loaders/get-featured-tags";
 
 /**
- * 法案一覧（/bills）。見出しは「法案を検索する」。
+ * 議案一覧（/bills）。見出しは「議案を検索する」。
  *
  * 絞り込みの状態はすべて URL に載せる。並び替え以外はリンクで完結するので、
  * ページ全体を Server Component のまま保てる。
@@ -98,12 +98,12 @@ export async function BillsListPage({
           <Breadcrumb
             items={[
               { label: "トップ", href: routes.home() },
-              { label: "法案を検索する" },
+              { label: "議案を検索する" },
             ]}
           />
         </div>
 
-        <h1 className="mb-4 text-3xl font-bold">法案を検索する</h1>
+        <h1 className="mb-4 text-3xl font-bold">議案を検索する</h1>
 
         <form action={routes.billsList()} className="mb-5">
           <div className="flex h-12 items-center gap-2.5 rounded-full border border-mirai-border bg-white pr-4 pl-5">
@@ -114,9 +114,9 @@ export async function BillsListPage({
             <input
               type="search"
               name="q"
-              aria-label="法案を検索"
+              aria-label="議案を検索"
               defaultValue={params.query}
-              placeholder="法案名やキーワードで探す"
+              placeholder="議案名やキーワードで探す"
               className="w-full bg-transparent text-sm outline-none"
             />
           </div>
@@ -187,11 +187,14 @@ export async function BillsListPage({
 
         <div className="mb-3 flex items-center gap-3">
           <p className="text-[13px] font-bold text-mirai-text-secondary">
-            {bills.length}件の法案
+            {bills.length}件の議案
           </p>
           <BillsSortSelect params={params} />
         </div>
 
+        <p className="mb-4 text-sm text-mirai-text-secondary">
+          現在は開発中のため、掲載議案は国会のサンプルデータです。北九州市議会の実際の議案ではありません。
+        </p>
         {bills.length === 0 ? (
           <div className="flex flex-col items-center gap-4 rounded-2xl border border-mirai-border bg-white px-6 py-16 text-center">
             <Search
@@ -200,7 +203,7 @@ export async function BillsListPage({
             />
             <div className="flex flex-col gap-1.5">
               <p className="text-base font-bold">
-                該当する法案が見つかりませんでした
+                該当する議案が見つかりませんでした
               </p>
               <p className="text-[13px] text-mirai-text-muted">
                 キーワードを変えるか、絞り込み条件を解除してお試しください
@@ -217,16 +220,16 @@ export async function BillsListPage({
           </ul>
         )}
 
-        {/* 掲載外の法案は本家の一覧に送る */}
+        {/* 正式な議案情報は市議会公式サイトへ案内する */}
         <div className="mt-8 text-sm text-mirai-text-secondary">
           <Link
-            href="https://www.shugiin.go.jp/internet/itdb_gian.nsf/html/gian/menu.htm"
+            href="https://www.city.kitakyushu.lg.jp/sigikai/menu11_0006.html"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1 hover:opacity-80"
           >
-            国会に提出されているすべての法案は{" "}
-            <span className="underline">国会議案情報へ</span>
+            北九州市議会の正式な議案情報は{" "}
+            <span className="underline">北九州市議会の議案情報へ</span>
             <ExternalLink className="h-3 w-3" aria-hidden />
           </Link>
         </div>
