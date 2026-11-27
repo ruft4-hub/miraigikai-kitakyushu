@@ -33,7 +33,7 @@ export function BillsSortSelect({ params }: { params: BillsListParams }) {
         }}
         className="h-9 rounded-lg border border-mirai-border bg-white px-3 text-[13px] font-medium text-mirai-text"
       >
-        {BILL_SORT_KEYS.map((key) => (
+        {BILL_SORT_KEYS.filter((key) => key !== "voices").map((key) => (
           <option key={key} value={key}>
             {BILL_SORT_LABELS[key]}
           </option>

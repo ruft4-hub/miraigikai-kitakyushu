@@ -113,14 +113,14 @@ describe("BillCard", () => {
     expect(screen.getByText("暮らし")).toBeInTheDocument();
   });
 
-  it("公開インタビューがあるときだけ受付中を出す", () => {
+  it("公開インタビューがあっても受付中を出さない", () => {
     const { rerender } = render(
       <BillCard bill={createMockBill({ hasPublicInterview: false })} />
     );
     expect(screen.queryByText("AIインタビュー受付中")).not.toBeInTheDocument();
 
     rerender(<BillCard bill={createMockBill({ hasPublicInterview: true })} />);
-    expect(screen.getByText("AIインタビュー受付中")).toBeInTheDocument();
+    expect(screen.queryByText("AIインタビュー受付中")).not.toBeInTheDocument();
   });
 
   it("レビュー完了のときだけ完了バッジを添える", () => {

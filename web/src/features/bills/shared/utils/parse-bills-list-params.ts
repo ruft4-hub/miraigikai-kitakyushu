@@ -55,8 +55,8 @@ export function parseBillsListParams(
     query: firstValue(searchParams.q)?.trim() ?? "",
     status: isBillStatusGroup(status) ? status : "all",
     tagId: tag || null,
-    sort: isBillSortKey(sort) ? sort : DEFAULT_BILL_SORT,
-    interviewOnly: firstValue(searchParams.interview) === "1",
+    sort: isBillSortKey(sort) && sort !== "voices" ? sort : DEFAULT_BILL_SORT,
+    interviewOnly: false,
   };
 }
 
@@ -74,8 +74,8 @@ export function buildBillsListQuery(
   if (next.query) params.set("q", next.query);
   if (next.status !== "all") params.set("status", next.status);
   if (next.tagId) params.set("tag", next.tagId);
-  if (next.sort !== DEFAULT_BILL_SORT) params.set("sort", next.sort);
-  if (next.interviewOnly) params.set("interview", "1");
+  if (next.sort !== DEFAULT_BILL_SORT && next.sort !== "voices")
+    params.set("sort", next.sort);
 
   const queryString = params.toString();
   return queryString ? `?${queryString}` : "";

@@ -120,7 +120,7 @@ describe("BillSearchCard", () => {
     expect(screen.queryByText(/回答/)).not.toBeInTheDocument();
   });
 
-  it("タグと受付中を下の段に並べる", () => {
+  it("タグを表示し受付中は表示しない", () => {
     render(
       <BillSearchCard
         bill={createMockBill({
@@ -131,11 +131,11 @@ describe("BillSearchCard", () => {
     );
 
     expect(screen.getByText("税金")).toBeInTheDocument();
-    expect(screen.getByText("AIインタビュー受付中")).toBeInTheDocument();
+    expect(screen.queryByText("AIインタビュー受付中")).not.toBeInTheDocument();
   });
 
-  // 0人と書くと参加をためらわせるので、集まっている議案にだけ数字を出す。
-  it("回答が集まっている議案にだけ回答数を出す", () => {
+  // 現行版ではAIインタビューの回答数を表示しない。
+  it("回答が集まっていても回答数を出さない", () => {
     const { rerender } = render(
       <BillSearchCard bill={createMockBill({ publicReportCount: 0 })} />
     );
@@ -146,7 +146,9 @@ describe("BillSearchCard", () => {
     rerender(
       <BillSearchCard bill={createMockBill({ publicReportCount: 12 })} />
     );
-    expect(screen.getByText(/12人がAIインタビューに回答/)).toBeInTheDocument();
+    expect(
+      screen.queryByText(/人がAIインタビューに回答/)
+    ).not.toBeInTheDocument();
   });
 
   it("レビュー完了のときだけ完了バッジを添える", () => {

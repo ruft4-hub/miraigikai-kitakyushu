@@ -32,7 +32,7 @@ describe("parseBillsListParams", () => {
       status: "enacted",
       tagId: "zeikin",
       sort: "old",
-      interviewOnly: true,
+      interviewOnly: false,
     });
   });
 
@@ -60,8 +60,8 @@ describe("parseBillsListParams", () => {
     expect(parseBillsListParams({ tag: "   " }).tagId).toBeNull();
   });
 
-  it("interview は 1 のときだけ真", () => {
-    expect(parseBillsListParams({ interview: "1" }).interviewOnly).toBe(true);
+  it("interview の指定は無視する", () => {
+    expect(parseBillsListParams({ interview: "1" }).interviewOnly).toBe(false);
     expect(parseBillsListParams({ interview: "true" }).interviewOnly).toBe(
       false
     );
@@ -98,10 +98,8 @@ describe("buildBillsListQuery", () => {
     );
   });
 
-  it("インタビュー絞り込みは 1 で載せる", () => {
-    expect(buildBillsListQuery(defaults, { interviewOnly: true })).toBe(
-      "?interview=1"
-    );
+  it("インタビュー絞り込みはURLに載せない", () => {
+    expect(buildBillsListQuery(defaults, { interviewOnly: true })).toBe("");
   });
 
   it("タグを外せる", () => {
@@ -115,7 +113,7 @@ describe("buildBillsListQuery", () => {
       status: "enacted",
       tagId: "zeikin",
       sort: "old",
-      interviewOnly: true,
+      interviewOnly: false,
     };
     const queryString = buildBillsListQuery(current, {});
     const parsed = Object.fromEntries(
@@ -123,5 +121,15 @@ describe("buildBillsListQuery", () => {
     );
 
     expect(parseBillsListParams(parsed)).toEqual(current);
+  });
+});
+
+describe("無効化した並び替え条件", () => {
+  it("voices を指定しても既定の並び順に戻す", () => {
+    expect(parseBillsListParams({ sort: "voices" }).sort).toBe("new");
+  });
+
+  it("voices をURLに載せない", () => {
+    expect(buildBillsListQuery(defaults, { sort: "voices" })).toBe("");
   });
 });

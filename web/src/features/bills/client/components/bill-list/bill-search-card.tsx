@@ -7,7 +7,6 @@ import { formatDateWithDots } from "@/lib/utils/date";
 import type { BillWithContent } from "../../../shared/types";
 import { getArticleReviewState } from "../../../shared/utils/article-review-state";
 import { ReviewCompleteBadge } from "../bill-detail/review-status-banner";
-import { BillPill } from "./bill-pill";
 import { BillProposalTypeBadge } from "./bill-proposal-type-badge";
 import { BillStatusBadge } from "./bill-status-badge";
 import { BillTag } from "./bill-tag";
@@ -23,15 +22,13 @@ import { BillTag } from "./bill-tag";
  * 「サムネ幅 + 右余白」を padding で空ける必要があり、狭い画面で本文が潰れる。
  * ふりがな表示で行数が伸びたときに空白の柱が残る問題も避けられる。
  *
- * タグと回答数だけはサムネの下でカード全幅に置く。左の段に押し込むと狭い画面で
+ * タグだけはサムネの下でカード全幅に置く。左の段に押し込むと狭い画面で
  * チップが1つずつ折り返して縦に伸びる。
  */
 export function BillSearchCard({ bill }: { bill: BillWithContent }) {
   const title = bill.bill_content?.title || bill.name;
   const summary = bill.bill_content?.summary;
-  const reportCount = bill.publicReportCount ?? 0;
-  const hasBadges =
-    bill.tags.length > 0 || bill.hasPublicInterview || reportCount > 0;
+  const hasBadges = bill.tags.length > 0;
 
   return (
     <Card className="overflow-hidden border border-black shadow-none transition-colors hover:bg-muted/50">
@@ -91,13 +88,6 @@ export function BillSearchCard({ bill }: { bill: BillWithContent }) {
             {bill.tags.map((tag) => (
               <BillTag key={tag.id} tag={tag} />
             ))}
-            {bill.hasPublicInterview && (
-              <BillPill>AIインタビュー受付中</BillPill>
-            )}
-            {/* 回答が集まっている議案だけ数字を出す。0人と書くと参加をためらわせる。 */}
-            {reportCount > 0 && (
-              <BillPill>💬 {reportCount}人がAIインタビューに回答</BillPill>
-            )}
           </div>
         )}
       </Link>
