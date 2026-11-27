@@ -13,10 +13,10 @@ type CurrentDietSessionProps = {
 };
 
 /**
- * 今国会の状況カード。
+ * 市議会の会期状況カード。
  *
  * 会期中は進行バーと残り日数を出す。パーセンテージだけだと寄付の目標額のように
- * 読まれるため、召集日と閉会予定日を併記する。
+ * 読まれるため、開会日と閉会予定日を併記する。
  * 閉会中はバーを出さず、どの会期が終わったのかをテキストで示す。
  */
 export function CurrentDietSession({
@@ -39,7 +39,9 @@ export function CurrentDietSession({
             }`}
             aria-hidden
           />
-          <span className="whitespace-nowrap text-xl font-bold">本日は</span>
+          <span className="whitespace-nowrap text-xl font-bold">
+            北九州市議会
+          </span>
           {/* 会期中は状態そのものを目立たせ、閉会中は落ち着かせる。 */}
           <span
             className={`rounded-full px-3.5 py-1 text-[15px] font-bold ${
@@ -48,7 +50,7 @@ export function CurrentDietSession({
                 : "bg-mirai-surface-muted text-mirai-text-secondary"
             }`}
           >
-            {inSession ? "国会会期中" : "国会閉会中"}
+            {inSession ? "会期中" : closedSession ? "閉会中" : "情報準備中"}
           </span>
           {inSession && (
             <span className="text-[15px] font-bold text-mirai-brand-teal-deep md:ml-auto">
@@ -60,6 +62,11 @@ export function CurrentDietSession({
         {inSession && <SessionProgressBar session={session} now={now} />}
         {!inSession && closedSession && (
           <ClosedSessionSummary session={closedSession} />
+        )}
+        {!inSession && !closedSession && (
+          <p className="text-sm text-mirai-text-secondary">
+            北九州市議会の会期情報は現在準備中です。
+          </p>
         )}
       </div>
     </Container>
@@ -105,7 +112,7 @@ function SessionProgressBar({
       {/* パーセンテージ単独だと目標額のように読まれるので、日付を両端に置く。 */}
       <div className="flex items-baseline justify-between gap-2 text-xs font-bold text-mirai-text-secondary">
         <span className="whitespace-nowrap">
-          {formatDateWithDots(session.start_date)} 召集
+          {formatDateWithDots(session.start_date)} 開会
         </span>
         <span className="whitespace-nowrap">
           {formatDateWithDots(session.end_date)} 閉会予定

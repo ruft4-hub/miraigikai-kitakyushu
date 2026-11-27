@@ -26,6 +26,9 @@ import { getJapanTime } from "@/lib/utils/date";
 /** カテゴリタブの「注目」から飛ばす先。 */
 const FEATURED_ANCHOR = "featured";
 
+// 正式な市議会データの登録・検証後に有効化する。
+const ENABLE_COUNCIL_SESSION_DISPLAY = false;
+
 export default async function Home() {
   const japanTime = getJapanTime();
   // ゆくゆくタグ機能がマージされたらBFFに統合する
@@ -44,8 +47,12 @@ export default async function Home() {
     featuredTags,
   ] = await Promise.all([
     loadHomeData(),
-    getCurrentDietSession(japanTime),
-    getLatestClosedDietSession(japanTime),
+    ENABLE_COUNCIL_SESSION_DISPLAY
+      ? getCurrentDietSession(japanTime)
+      : Promise.resolve(null),
+    ENABLE_COUNCIL_SESSION_DISPLAY
+      ? getLatestClosedDietSession(japanTime)
+      : Promise.resolve(null),
     getDifficultyLevel(),
     getSuggestableBills(),
     getFeaturedTags(),
@@ -76,7 +83,7 @@ export default async function Home() {
 
   return (
     <>
-      {/* 本日の国会セクション */}
+      {/* 市議会の会期情報セクション */}
       <CurrentDietSession
         session={currentSession}
         closedSession={latestClosedSession}
@@ -85,6 +92,9 @@ export default async function Home() {
 
       <Container>
         <div className="pt-4">
+          <p className="mb-4 text-sm text-mirai-text-secondary">
+            現在は開発中のため、掲載議案は国会のサンプルデータです。北九州市議会の実際の議案ではありません。
+          </p>
           <CategoryTabs
             billsByTag={billsByTag}
             featuredAnchor={inSession ? FEATURED_ANCHOR : undefined}
@@ -121,23 +131,24 @@ export default async function Home() {
         </div>
       </Container>
 
-      {/* 前回の国会セクション（Archive） */}
-      {(previousSessionData || pastSessions.length > 0) && (
-        <div className="bg-mirai-surface-muted py-10">
-          <Container>
-            <div className="flex flex-col gap-10">
-              {previousSessionData && (
-                <PreviousSessionSection
-                  session={previousSessionData.session}
-                  bills={previousSessionData.bills}
-                  totalBillCount={previousSessionData.totalBillCount}
-                />
-              )}
-              <PastSessionList sessions={pastSessions} />
-            </div>
-          </Container>
-        </div>
-      )}
+      {/* 過去の市議会会期セクション（Archive） */}
+      {ENABLE_COUNCIL_SESSION_DISPLAY &&
+        (previousSessionData || pastSessions.length > 0) && (
+          <div className="bg-mirai-surface-muted py-10">
+            <Container>
+              <div className="flex flex-col gap-10">
+                {previousSessionData && (
+                  <PreviousSessionSection
+                    session={previousSessionData.session}
+                    bills={previousSessionData.bills}
+                    totalBillCount={previousSessionData.totalBillCount}
+                  />
+                )}
+                <PastSessionList sessions={pastSessions} />
+              </div>
+            </Container>
+          </div>
+        )}
 
       <Container>
         {/* みらい議会とは セクション */}
