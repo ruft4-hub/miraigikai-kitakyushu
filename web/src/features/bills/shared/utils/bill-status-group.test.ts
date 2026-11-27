@@ -10,22 +10,20 @@ import {
 const bill = (status: BillStatusEnum) => ({ status });
 
 describe("toBillStatusGroup", () => {
-  it("衆参どちらの審議中も「審議中」に畳む", () => {
+  it("審議場所にかかわらず「審議中」に畳む", () => {
     expect(toBillStatusGroup("in_originating_house")).toBe("deliberating");
     expect(toBillStatusGroup("in_receiving_house")).toBe("deliberating");
   });
 
-  // 既存の getCardStatusLabel が introduced を「国会審議中」に含めるため、
-  // ここで「審議待ち」に落とすとバッジとタブが食い違う。
-  it("提出済みは既存バッジに合わせて「審議中」に含める", () => {
-    expect(toBillStatusGroup("introduced")).toBe("deliberating");
+  it("提出済みは「審議前」に含める", () => {
+    expect(toBillStatusGroup("introduced")).toBe("waiting");
   });
 
-  it("提出前だけが「審議待ち」になる", () => {
+  it("提出前も「審議前」に含める", () => {
     expect(toBillStatusGroup("preparing")).toBe("waiting");
   });
 
-  it("成立と否決はそのまま", () => {
+  it("可決と否決を区別する", () => {
     expect(toBillStatusGroup("enacted")).toBe("enacted");
     expect(toBillStatusGroup("rejected")).toBe("rejected");
   });
@@ -57,8 +55,8 @@ describe("countByStatusGroup", () => {
 
     expect(counts).toEqual({
       all: 6,
-      deliberating: 3,
-      waiting: 1,
+      deliberating: 2,
+      waiting: 2,
       enacted: 1,
       rejected: 1,
     });

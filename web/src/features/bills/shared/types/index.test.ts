@@ -3,16 +3,16 @@ import { describe, expect, it } from "vitest";
 import { getBillStatusLabel } from "./index";
 
 describe("getBillStatusLabel", () => {
-  it("returns '準備中' for preparing", () => {
-    expect(getBillStatusLabel("preparing")).toBe("準備中");
+  it("returns '議案提出前' for preparing", () => {
+    expect(getBillStatusLabel("preparing")).toBe("議案提出前");
   });
 
-  it("returns '提出済み' for introduced", () => {
-    expect(getBillStatusLabel("introduced")).toBe("提出済み");
+  it("returns '議案提出済み' for introduced", () => {
+    expect(getBillStatusLabel("introduced")).toBe("議案提出済み");
   });
 
-  it("returns '成立' for enacted", () => {
-    expect(getBillStatusLabel("enacted")).toBe("成立");
+  it("returns '可決' for enacted", () => {
+    expect(getBillStatusLabel("enacted")).toBe("可決");
   });
 
   it("returns '否決' for rejected", () => {
@@ -20,16 +20,12 @@ describe("getBillStatusLabel", () => {
   });
 
   describe("in_originating_house", () => {
-    it("returns '衆議院審議中' when originatingHouse is HR", () => {
-      expect(getBillStatusLabel("in_originating_house", "HR")).toBe(
-        "衆議院審議中"
-      );
+    it("returns '審議中' when originatingHouse is HR", () => {
+      expect(getBillStatusLabel("in_originating_house", "HR")).toBe("審議中");
     });
 
-    it("returns '参議院審議中' when originatingHouse is HC", () => {
-      expect(getBillStatusLabel("in_originating_house", "HC")).toBe(
-        "参議院審議中"
-      );
+    it("returns '審議中' when originatingHouse is HC", () => {
+      expect(getBillStatusLabel("in_originating_house", "HC")).toBe("審議中");
     });
 
     it("returns '審議中' when originatingHouse is undefined", () => {
@@ -42,16 +38,12 @@ describe("getBillStatusLabel", () => {
   });
 
   describe("in_receiving_house", () => {
-    it("returns '参議院審議中' when originatingHouse is HR", () => {
-      expect(getBillStatusLabel("in_receiving_house", "HR")).toBe(
-        "参議院審議中"
-      );
+    it("returns '審議中' when originatingHouse is HR", () => {
+      expect(getBillStatusLabel("in_receiving_house", "HR")).toBe("審議中");
     });
 
-    it("returns '衆議院審議中' when originatingHouse is HC", () => {
-      expect(getBillStatusLabel("in_receiving_house", "HC")).toBe(
-        "衆議院審議中"
-      );
+    it("returns '審議中' when originatingHouse is HC", () => {
+      expect(getBillStatusLabel("in_receiving_house", "HC")).toBe("審議中");
     });
 
     it("returns '審議中' when originatingHouse is undefined", () => {
