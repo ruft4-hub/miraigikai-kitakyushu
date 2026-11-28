@@ -11,6 +11,7 @@ export function prepareBillForDuplication(originalBill: Bill): BillInsert {
     updated_at: ___,
     status_order: ____,
     slug: _____,
+    publish_status_order: ______,
     ...billWithoutId
   } = originalBill;
 
@@ -20,6 +21,13 @@ export function prepareBillForDuplication(originalBill: Bill): BillInsert {
     name: `${originalBill.name} (複製)`,
     publish_status: "draft",
     is_review_completed: false,
+    bill_number: null,
+    proposer: null,
+    decision_date: null,
+    decision_result: null,
+    source_url: null,
+    result_source_url: null,
+    is_sample: true,
   };
 }
 

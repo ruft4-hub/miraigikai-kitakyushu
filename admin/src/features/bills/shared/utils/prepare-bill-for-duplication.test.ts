@@ -17,6 +17,13 @@ const baseBill: Bill = {
   is_review_completed: true,
   article_kind: "standard",
   originating_house: "HR",
+  bill_number: null,
+  proposer: null,
+  decision_date: null,
+  decision_result: null,
+  source_url: null,
+  result_source_url: null,
+  is_sample: true,
   proposal_type: "cabinet",
   publish_status: "published",
   published_at: null,
@@ -60,6 +67,29 @@ describe("prepareBillForDuplication", () => {
     const billWithSlug = { ...baseBill, slug: "test-slug" };
     const result = prepareBillForDuplication(billWithSlug);
     expect(result.slug).toBeNull();
+  });
+
+  it("複製時に公式議案情報をリセットする", () => {
+    const result = prepareBillForDuplication({
+      ...baseBill,
+      bill_number: "第80号",
+      proposer: "市長",
+      decision_date: "2026-10-01",
+      decision_result: "認定",
+      source_url: "https://example.com/bill",
+      result_source_url: "https://example.com/result",
+      is_sample: false,
+    });
+
+    expect(result.bill_number).toBeNull();
+    expect(result.proposer).toBeNull();
+    expect(result.decision_date).toBeNull();
+    expect(result.decision_result).toBeNull();
+    expect(result.source_url).toBeNull();
+    expect(result.result_source_url).toBeNull();
+    expect(result.is_sample).toBe(true);
+    expect(result).not.toHaveProperty("status_order");
+    expect(result).not.toHaveProperty("publish_status_order");
   });
 
   it("その他のフィールドを保持する", () => {
