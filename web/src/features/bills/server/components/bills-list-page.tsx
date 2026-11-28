@@ -8,7 +8,6 @@ import {
   type LucideIcon,
   MessageSquare,
   Search,
-  X,
 } from "lucide-react";
 import type { Route } from "next";
 import Link from "next/link";
@@ -270,8 +269,7 @@ const STATUS_GROUP_ICONS: Record<BillStatusGroup, LucideIcon> = {
   all: AlignLeft,
   deliberating: MessageSquare,
   waiting: Clock,
-  enacted: Check,
-  rejected: X,
+  decided: Check,
 };
 
 /**

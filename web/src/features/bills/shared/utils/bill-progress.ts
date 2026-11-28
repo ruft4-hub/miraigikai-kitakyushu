@@ -5,8 +5,10 @@ const STATUS_TO_STEP: Record<BillStatusEnum, number> = {
   preparing: 0,
   introduced: 1,
   in_originating_house: 2,
+  deliberating: 2,
   in_receiving_house: 2,
   enacted: 3,
+  decided: 3,
   rejected: 3,
 } as const;
 

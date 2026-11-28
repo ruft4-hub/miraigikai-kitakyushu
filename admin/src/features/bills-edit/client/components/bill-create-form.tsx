@@ -32,6 +32,8 @@ export function BillCreateForm({ dietSessions }: BillCreateFormProps) {
       originating_house: null,
       proposal_type: null,
       status_note: null,
+      decision_result: null,
+      decision_date: null,
       submitted_date: new Date().toLocaleDateString("sv-SE", {
         timeZone: "Asia/Tokyo",
       }),

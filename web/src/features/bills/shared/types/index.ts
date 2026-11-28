@@ -71,9 +71,11 @@ export type BillsByTag = {
 // ステータスのソート順（DBのstatus_order generated columnと一致させる）
 export const BILL_STATUS_ORDER: Record<BillStatusEnum, number> = {
   enacted: 0,
+  decided: 0,
   rejected: 1,
   in_receiving_house: 2,
   in_originating_house: 3,
+  deliberating: 3,
   introduced: 4,
   preparing: 5,
 };
@@ -94,9 +96,13 @@ export function getBillStatusLabel(
       return "議案提出前";
     case "introduced":
       return "議案提出済み";
+    case "deliberating":
+      return "審議中";
     case "in_originating_house":
     case "in_receiving_house":
       return "審議中";
+    case "decided":
+      return "議決済み";
     case "enacted":
       return "可決";
     case "rejected":

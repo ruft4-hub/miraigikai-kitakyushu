@@ -1,56 +1,35 @@
 "use client";
 
-import { useState } from "react";
 import type { Route } from "next";
 import Link from "next/link";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import type { BillWithContent } from "@/features/bills/shared/types";
 import { CompactBillCard } from "@/features/bills/client/components/bill-list/compact-bill-card";
+import type { BillWithContent } from "@/features/bills/shared/types";
+import {
+  BILL_STATUS_GROUP_LABELS,
+  BILL_STATUS_GROUPS,
+  type BillStatusGroup,
+  countByStatusGroup,
+  filterByStatusGroup,
+} from "@/features/bills/shared/utils/bill-status-group";
 import { routes } from "@/lib/routes";
-
-type FilterType = "all" | "enacted" | "rejected" | "other";
 
 type Props = {
   bills: BillWithContent[];
 };
 
-function getFilterCounts(bills: BillWithContent[]) {
-  const enacted = bills.filter((b) => b.status === "enacted").length;
-  const rejected = bills.filter((b) => b.status === "rejected").length;
-  const other = bills.length - enacted - rejected;
-
-  return { all: bills.length, enacted, rejected, other };
-}
-
-function filterBills(
-  bills: BillWithContent[],
-  filter: FilterType
-): BillWithContent[] {
-  switch (filter) {
-    case "enacted":
-      return bills.filter((b) => b.status === "enacted");
-    case "rejected":
-      return bills.filter((b) => b.status === "rejected");
-    case "other":
-      return bills.filter(
-        (b) => b.status !== "enacted" && b.status !== "rejected"
-      );
-    default:
-      return bills;
-  }
-}
-
 export function BillListWithStatusFilter({ bills }: Props) {
-  const [activeFilter, setActiveFilter] = useState<FilterType>("all");
-  const counts = getFilterCounts(bills);
-  const filteredBills = filterBills(bills, activeFilter);
+  const [activeFilter, setActiveFilter] = useState<BillStatusGroup>("all");
 
-  const filters: { key: FilterType; label: string; count: number }[] = [
-    { key: "all", label: "ALL", count: counts.all },
-    { key: "enacted", label: "成立", count: counts.enacted },
-    { key: "rejected", label: "否決", count: counts.rejected },
-    { key: "other", label: "その他", count: counts.other },
-  ];
+  const counts = countByStatusGroup(bills);
+  const filteredBills = filterByStatusGroup(bills, activeFilter);
+
+  const filters = BILL_STATUS_GROUPS.map((key) => ({
+    key,
+    label: BILL_STATUS_GROUP_LABELS[key],
+    count: counts[key],
+  }));
 
   return (
     <div className="flex flex-col gap-4">
@@ -72,10 +51,10 @@ export function BillListWithStatusFilter({ bills }: Props) {
         ))}
       </div>
 
-      {/* 法案リスト */}
+      {/* 議案リスト */}
       {filteredBills.length === 0 ? (
         <p className="text-center py-12 text-muted-foreground">
-          該当する法案がありません
+          該当する議案がありません
         </p>
       ) : (
         <div className="flex flex-col gap-3">

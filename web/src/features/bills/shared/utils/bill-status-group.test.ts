@@ -10,65 +10,69 @@ import {
 const bill = (status: BillStatusEnum) => ({ status });
 
 describe("toBillStatusGroup", () => {
-  it("審議場所にかかわらず「審議中」に畳む", () => {
-    expect(toBillStatusGroup("in_originating_house")).toBe("deliberating");
-    expect(toBillStatusGroup("in_receiving_house")).toBe("deliberating");
-  });
-
-  it("提出済みは「審議前」に含める", () => {
-    expect(toBillStatusGroup("introduced")).toBe("waiting");
-  });
-
-  it("提出前も「審議前」に含める", () => {
-    expect(toBillStatusGroup("preparing")).toBe("waiting");
-  });
-
-  it("可決と否決を区別する", () => {
-    expect(toBillStatusGroup("enacted")).toBe("enacted");
-    expect(toBillStatusGroup("rejected")).toBe("rejected");
+  it.each([
+    ["preparing", "waiting"],
+    ["introduced", "waiting"],
+    ["in_originating_house", "deliberating"],
+    ["in_receiving_house", "deliberating"],
+    ["deliberating", "deliberating"],
+    ["enacted", "decided"],
+    ["rejected", "decided"],
+    ["decided", "decided"],
+  ] as const)("%s を %s に分類する", (status, group) => {
+    expect(toBillStatusGroup(status)).toBe(group);
   });
 });
 
 describe("isBillStatusGroup", () => {
-  it("既知のグループだけ通す", () => {
-    expect(isBillStatusGroup("all")).toBe(true);
-    expect(isBillStatusGroup("deliberating")).toBe(true);
+  it.each([
+    "all",
+    "waiting",
+    "deliberating",
+    "decided",
+  ])("%s を許容する", (group) => {
+    expect(isBillStatusGroup(group)).toBe(true);
   });
 
-  it("未知の値は弾く", () => {
-    expect(isBillStatusGroup("introduced")).toBe(false);
-    expect(isBillStatusGroup(undefined)).toBe(false);
-    expect(isBillStatusGroup(3)).toBe(false);
+  it.each([
+    "introduced",
+    "enacted",
+    "rejected",
+    undefined,
+    null,
+    3,
+  ])("%s を新しいグループとしては許容しない", (value) => {
+    expect(isBillStatusGroup(value)).toBe(false);
   });
 });
 
 describe("countByStatusGroup", () => {
-  it("グループごとに数え、all は総数にする", () => {
-    const counts = countByStatusGroup([
+  it("全8種類のステータスを正しく集計する", () => {
+    const bills = [
+      bill("preparing"),
+      bill("introduced"),
       bill("in_originating_house"),
       bill("in_receiving_house"),
-      bill("introduced"),
-      bill("preparing"),
+      bill("deliberating"),
       bill("enacted"),
       bill("rejected"),
-    ]);
+      bill("decided"),
+    ];
 
-    expect(counts).toEqual({
-      all: 6,
-      deliberating: 2,
+    expect(countByStatusGroup(bills)).toEqual({
+      all: 8,
       waiting: 2,
-      enacted: 1,
-      rejected: 1,
+      deliberating: 3,
+      decided: 3,
     });
   });
 
   it("空なら全て0", () => {
     expect(countByStatusGroup([])).toEqual({
       all: 0,
-      deliberating: 0,
       waiting: 0,
-      enacted: 0,
-      rejected: 0,
+      deliberating: 0,
+      decided: 0,
     });
   });
 });
@@ -76,20 +80,34 @@ describe("countByStatusGroup", () => {
 describe("filterByStatusGroup", () => {
   const bills = [
     bill("in_originating_house"),
+    bill("deliberating"),
     bill("enacted"),
+    bill("rejected"),
+    bill("decided"),
     bill("preparing"),
   ];
 
   it("all は素通しする", () => {
-    expect(filterByStatusGroup(bills, "all")).toHaveLength(3);
+    expect(filterByStatusGroup(bills, "all")).toEqual(bills);
   });
 
-  it("指定グループだけ残す", () => {
-    expect(filterByStatusGroup(bills, "enacted")).toEqual([bill("enacted")]);
+  it("議決済みの議案をまとめて取得する", () => {
+    expect(filterByStatusGroup(bills, "decided")).toEqual([
+      bill("enacted"),
+      bill("rejected"),
+      bill("decided"),
+    ]);
+  });
+
+  it("審議中の議案をまとめて取得する", () => {
+    expect(filterByStatusGroup(bills, "deliberating")).toEqual([
+      bill("in_originating_house"),
+      bill("deliberating"),
+    ]);
   });
 
   it("該当が無ければ空", () => {
-    expect(filterByStatusGroup(bills, "rejected")).toEqual([]);
+    expect(filterByStatusGroup([bill("preparing")], "decided")).toEqual([]);
   });
 
   it("元の配列を壊さない", () => {

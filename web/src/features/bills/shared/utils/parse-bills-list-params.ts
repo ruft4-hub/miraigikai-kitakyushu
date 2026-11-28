@@ -47,7 +47,9 @@ export const DEFAULT_BILLS_LIST_PARAMS: Readonly<BillsListParams> = {
 export function parseBillsListParams(
   searchParams: BillsListSearchParams
 ): BillsListParams {
-  const status = firstValue(searchParams.status);
+  const rawStatus = firstValue(searchParams.status);
+  const status =
+    rawStatus === "enacted" || rawStatus === "rejected" ? "decided" : rawStatus;
   const sort = firstValue(searchParams.sort);
   const tag = firstValue(searchParams.tag)?.trim();
 

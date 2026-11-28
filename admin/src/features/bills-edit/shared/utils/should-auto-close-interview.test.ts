@@ -6,9 +6,14 @@ describe("shouldAutoCloseInterviewOnBillStatus", () => {
     expect(shouldAutoCloseInterviewOnBillStatus("enacted")).toBe(true);
   });
 
+  it("decided のときは true を返す", () => {
+    expect(shouldAutoCloseInterviewOnBillStatus("decided")).toBe(true);
+  });
+
   it.each([
     ["preparing"],
     ["introduced"],
+    ["deliberating"],
     ["in_originating_house"],
     ["in_receiving_house"],
     ["rejected"],

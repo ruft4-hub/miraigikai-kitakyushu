@@ -11,7 +11,7 @@ import {
   createTestPreviewToken,
   createTestTag,
 } from "@test-utils/utils";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   countPublishedBillsByDietSession,
   findBillById,
@@ -265,6 +265,23 @@ describe("bill-repository 統合テスト", () => {
   // ============================================================
 
   describe("findBillContentByDifficulty", () => {
+    it("本文未登録の場合はエラーを出さずnullを返す", async () => {
+      const bill = await createTestBill();
+      billIds.push(bill.id);
+
+      const errorSpy = vi.spyOn(console, "error");
+
+      try {
+        const result = await findBillContentByDifficulty(bill.id, "normal");
+        expect(result).toBeNull();
+        expect(errorSpy).not.toHaveBeenCalledWith(
+          expect.stringContaining("Failed to fetch bill content")
+        );
+      } finally {
+        errorSpy.mockRestore();
+      }
+    });
+
     it("指定した難易度の議案コンテンツを取得できる", async () => {
       const bill = await createTestBill();
       billIds.push(bill.id);

@@ -18,6 +18,8 @@ const billBaseSchema = z.object({
   status: z.enum([
     "preparing",
     "introduced",
+    "deliberating",
+    "decided",
     "in_originating_house",
     "in_receiving_house",
     "enacted",
@@ -32,6 +34,27 @@ const billBaseSchema = z.object({
     .string()
     .max(500, "ステータス備考は500文字以内で入力してください")
     .nullable(),
+  decision_result: z
+    .string()
+    .trim()
+    .min(1, "議決結果を入力してください")
+    .max(200, "議決結果は200文字以内で入力してください")
+    .nullable()
+    .optional(),
+  decision_date: z
+    .string()
+    .refine((value) => {
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(value) || value.startsWith("0000-")) {
+        return false;
+      }
+      const date = new Date(`${value}T00:00:00Z`);
+      return (
+        !Number.isNaN(date.getTime()) &&
+        date.toISOString().slice(0, 10) === value
+      );
+    }, "有効な議決日を入力してください")
+    .nullable()
+    .optional(),
   submitted_date: z
     .string()
     .refine(

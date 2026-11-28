@@ -6,6 +6,7 @@ import { BillStatusProgress } from "../../../client/components/bill-detail/bill-
 import type { BillWithContent } from "../../../shared/types";
 import { BillShareButtons } from "../share/bill-share-buttons";
 import { BillContent } from "./bill-content";
+import { BillDecisionInfo } from "./bill-decision-info";
 import { BillDetailHeader } from "./bill-detail-header";
 
 interface BillDetailLayoutProps {
@@ -46,6 +47,12 @@ export async function BillDetailLayout({
               status={bill.status}
               statusNote={bill.status_note}
             />
+            {bill.status === "decided" && (
+              <BillDecisionInfo
+                decisionResult={bill.decision_result}
+                decisionDate={bill.decision_date}
+              />
+            )}
           </div>
 
           <BillContent bill={bill} />

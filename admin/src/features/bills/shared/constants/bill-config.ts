@@ -31,6 +31,14 @@ export const BILL_STATUS_CONFIG: Record<
     icon: AlertCircle,
     color: "text-orange-600 bg-orange-50",
   },
+  deliberating: {
+    icon: Clock,
+    color: "text-yellow-600 bg-yellow-50",
+  },
+  decided: {
+    icon: CheckCircle,
+    color: "text-slate-600 bg-slate-50",
+  },
   enacted: {
     icon: CheckCircle,
     color: "text-green-600 bg-green-50",

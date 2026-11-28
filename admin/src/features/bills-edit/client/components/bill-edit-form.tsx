@@ -43,6 +43,8 @@ export function BillEditForm({
       originating_house: bill.originating_house,
       proposal_type: bill.proposal_type,
       status_note: bill.status_note,
+      decision_result: bill.decision_result,
+      decision_date: bill.decision_date,
       submitted_date: bill.submitted_date
         ? new Date(bill.submitted_date).toLocaleDateString("sv-SE", {
             timeZone: "Asia/Tokyo",

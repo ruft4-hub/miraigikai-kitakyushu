@@ -41,6 +41,8 @@ import { ThumbnailUpload } from "./thumbnail-upload";
 const BILL_STATUS_OPTIONS: Array<{ value: BillStatus; label: string }> = [
   { value: "preparing", label: "準備中" },
   { value: "introduced", label: "提出済み" },
+  { value: "deliberating", label: "審議中" },
+  { value: "decided", label: "議決済み" },
   { value: "in_originating_house", label: "審議中（提出院）" },
   { value: "in_receiving_house", label: "審議中（送付院）" },
   { value: "enacted", label: "成立" },
@@ -233,6 +235,47 @@ export function BillFormFields({
             <FormDescription>
               審議状況の詳細や補足情報を入力してください（最大500文字）
             </FormDescription>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+
+      <FormField
+        control={control}
+        name="decision_result"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>議決結果</FormLabel>
+            <FormControl>
+              <Input
+                {...field}
+                value={field.value ?? ""}
+                onChange={(e) =>
+                  field.onChange(e.target.value.trim() ? e.target.value : null)
+                }
+                placeholder="可決・否決・認定など"
+                maxLength={200}
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+
+      <FormField
+        control={control}
+        name="decision_date"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>議決日</FormLabel>
+            <FormControl>
+              <Input
+                {...field}
+                type="date"
+                value={field.value ?? ""}
+                onChange={(e) => field.onChange(e.target.value || null)}
+              />
+            </FormControl>
             <FormMessage />
           </FormItem>
         )}

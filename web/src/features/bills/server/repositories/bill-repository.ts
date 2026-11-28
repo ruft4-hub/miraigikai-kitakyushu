@@ -199,7 +199,7 @@ export async function findBillContentByDifficulty(
     .select("*")
     .eq("bill_id", billId)
     .eq("difficulty_level", difficultyLevel)
-    .single();
+    .maybeSingle();
 
   if (error) {
     console.error(`Failed to fetch bill content: ${error.message}`);

@@ -1,52 +1,42 @@
 import type { BillStatusEnum } from "../types";
 
-/**
- * 法案一覧のステータス絞り込みで使うグループ。
- *
- * DB の status は6値（preparing / introduced / in_originating_house /
- * in_receiving_house / enacted / rejected）だが、一覧のタブはデザイン上4つに束ねる。
- * 審議の場所（衆・参）は絞り込みの軸としては細かすぎるため、まとめて「審議中」にする。
- */
+/** 地方議会向けの審議ステータス分類 */
 export const BILL_STATUS_GROUPS = [
   "all",
-  "deliberating",
   "waiting",
-  "enacted",
-  "rejected",
+  "deliberating",
+  "decided",
 ] as const;
 
 export type BillStatusGroup = (typeof BILL_STATUS_GROUPS)[number];
 
 export const BILL_STATUS_GROUP_LABELS: Record<BillStatusGroup, string> = {
   all: "すべて",
-  deliberating: "審議中",
   waiting: "審議前",
-  enacted: "可決",
-  rejected: "否決",
+  deliberating: "審議中",
+  decided: "議決済み",
 };
 
-/**
- * 議案のステータスを検索用のグループに分類する。
- * 提出前と提出済みは「審議前」にまとめる。
- * 審議中の議案は審議場所にかかわらず同じグループにする。
- */
+/** 既存の国会向けステータスにも対応する */
 export function toBillStatusGroup(
   status: BillStatusEnum
 ): Exclude<BillStatusGroup, "all"> {
   switch (status) {
+    case "deliberating":
     case "in_originating_house":
     case "in_receiving_house":
       return "deliberating";
+    case "decided":
     case "enacted":
-      return "enacted";
     case "rejected":
-      return "rejected";
-    default:
+      return "decided";
+    case "preparing":
+    case "introduced":
       return "waiting";
   }
 }
 
-/** 文字列をグループに絞り込む型ガード。URL 直打ちで壊れないようにする。 */
+/** URLなどから受け取った値を検証する */
 export function isBillStatusGroup(value: unknown): value is BillStatusGroup {
   return (
     typeof value === "string" &&
@@ -54,28 +44,30 @@ export function isBillStatusGroup(value: unknown): value is BillStatusGroup {
   );
 }
 
-/** グループごとの件数。呼び出し側が渡した母集合をそのまま数える。 */
+/** グループごとの件数を集計する */
 export function countByStatusGroup(
   bills: readonly { status: BillStatusEnum }[]
 ): Record<BillStatusGroup, number> {
   const counts: Record<BillStatusGroup, number> = {
     all: bills.length,
-    deliberating: 0,
     waiting: 0,
-    enacted: 0,
-    rejected: 0,
+    deliberating: 0,
+    decided: 0,
   };
+
   for (const bill of bills) {
     counts[toBillStatusGroup(bill.status)] += 1;
   }
+
   return counts;
 }
 
-/** グループで絞る。`all` は素通し。 */
+/** 指定されたグループで議案を絞り込む */
 export function filterByStatusGroup<T extends { status: BillStatusEnum }>(
   bills: readonly T[],
   group: BillStatusGroup
 ): T[] {
   if (group === "all") return [...bills];
+
   return bills.filter((bill) => toBillStatusGroup(bill.status) === group);
 }

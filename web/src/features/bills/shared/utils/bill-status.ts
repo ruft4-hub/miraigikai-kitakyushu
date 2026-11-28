@@ -5,9 +5,12 @@ export function getCardStatusLabel(status: BillStatusEnum): string {
   switch (status) {
     case "introduced":
       return "議案提出済み";
+    case "deliberating":
     case "in_originating_house":
     case "in_receiving_house":
       return "審議中";
+    case "decided":
+      return "議決済み";
     case "enacted":
       return "可決";
     case "rejected":
@@ -23,9 +26,12 @@ export function getStatusVariant(
 ): "light" | "default" | "dark" | "muted" {
   switch (status) {
     case "introduced":
+    case "deliberating":
     case "in_originating_house":
     case "in_receiving_house":
       return "light";
+    case "decided":
+      return "muted";
     case "enacted":
       return "default";
     case "rejected":

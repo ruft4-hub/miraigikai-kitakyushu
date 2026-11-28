@@ -14,6 +14,13 @@ const defaults: BillsListParams = {
 };
 
 describe("parseBillsListParams", () => {
+  it.each([
+    "enacted",
+    "rejected",
+  ])("旧ステータス %s を議決済みに変換する", (status) => {
+    expect(parseBillsListParams({ status }).status).toBe("decided");
+  });
+
   it("何も無ければ既定に倒す", () => {
     expect(parseBillsListParams({})).toEqual(defaults);
   });
@@ -22,14 +29,14 @@ describe("parseBillsListParams", () => {
     expect(
       parseBillsListParams({
         q: "ガソリン",
-        status: "enacted",
+        status: "decided",
         tag: "zeikin",
         sort: "old",
         interview: "1",
       })
     ).toEqual({
       query: "ガソリン",
-      status: "enacted",
+      status: "decided",
       tagId: "zeikin",
       sort: "old",
       interviewOnly: false,
@@ -48,8 +55,8 @@ describe("parseBillsListParams", () => {
 
   it("配列で来たら先頭を採る", () => {
     expect(
-      parseBillsListParams({ q: ["a", "b"], status: ["enacted", "all"] })
-    ).toMatchObject({ query: "a", status: "enacted" });
+      parseBillsListParams({ q: ["a", "b"], status: ["decided", "all"] })
+    ).toMatchObject({ query: "a", status: "decided" });
   });
 
   it("前後の空白を落とす", () => {
@@ -81,8 +88,8 @@ describe("buildBillsListQuery", () => {
   });
 
   it("差し替えた値だけ載せる", () => {
-    expect(buildBillsListQuery(defaults, { status: "enacted" })).toBe(
-      "?status=enacted"
+    expect(buildBillsListQuery(defaults, { status: "decided" })).toBe(
+      "?status=decided"
     );
   });
 
@@ -93,8 +100,8 @@ describe("buildBillsListQuery", () => {
       tagId: "zeikin",
     };
 
-    expect(buildBillsListQuery(current, { status: "rejected" })).toBe(
-      "?q=%E7%A8%8E&status=rejected&tag=zeikin"
+    expect(buildBillsListQuery(current, { status: "decided" })).toBe(
+      "?q=%E7%A8%8E&status=decided&tag=zeikin"
     );
   });
 
@@ -110,7 +117,7 @@ describe("buildBillsListQuery", () => {
   it("parse と往復して同じ状態に戻る", () => {
     const current: BillsListParams = {
       query: "ガソリン",
-      status: "enacted",
+      status: "decided",
       tagId: "zeikin",
       sort: "old",
       interviewOnly: false,

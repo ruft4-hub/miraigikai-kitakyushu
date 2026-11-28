@@ -44,9 +44,11 @@ export const DEFAULT_BILL_SORT: BillSortConfig = {
 // ステータスのソート順（DBのstatus_order generated columnと一致させる）
 export const BILL_STATUS_ORDER: Record<BillStatus, number> = {
   enacted: 0,
+  decided: 0,
   rejected: 1,
   in_receiving_house: 2,
   in_originating_house: 3,
+  deliberating: 3,
   introduced: 4,
   preparing: 5,
 };
@@ -72,6 +74,8 @@ export function getBillStatusLabel(
       return "準備中";
     case "introduced":
       return "提出済み";
+    case "deliberating":
+      return "審議中";
     case "in_originating_house":
       if (originatingHouse) {
         return `${HOUSE_LABELS[originatingHouse]}審議中`;
@@ -83,6 +87,8 @@ export function getBillStatusLabel(
         return `${HOUSE_LABELS[receivingHouse]}審議中`;
       }
       return "審議中";
+    case "decided":
+      return "議決済み";
     case "enacted":
       return "成立";
     case "rejected":
