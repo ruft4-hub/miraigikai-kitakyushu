@@ -145,14 +145,23 @@ export function BillFormFields({
           name="originating_house"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>提出院 *</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <FormLabel>提出院（任意）</FormLabel>
+              <Select
+                onValueChange={(value) =>
+                  field.onChange(
+                    ORIGINATING_HOUSE_OPTIONS.find((o) => o.value === value)
+                      ?.value ?? null
+                  )
+                }
+                value={field.value ?? "unset"}
+              >
                 <FormControl>
                   <SelectTrigger>
                     <SelectValue placeholder="提出院を選択" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
+                  <SelectItem value="unset">該当なし・未設定</SelectItem>
                   {ORIGINATING_HOUSE_OPTIONS.map((option) => (
                     <SelectItem key={option.value} value={option.value}>
                       {option.label}
@@ -161,7 +170,7 @@ export function BillFormFields({
                 </SelectContent>
               </Select>
               <FormDescription>
-                議案を提出した議院を選択してください
+                地方議会の議案では該当なし・未設定を選択してください
               </FormDescription>
               <FormMessage />
             </FormItem>

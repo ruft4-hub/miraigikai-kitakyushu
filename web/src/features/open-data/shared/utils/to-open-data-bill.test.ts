@@ -28,6 +28,17 @@ const baseRow: OpenDataBillRow = {
 };
 
 describe("toOpenDataBillItem", () => {
+  it("提出院がない地方議会の議案ではNULLを返す", () => {
+    const item = toOpenDataBillItem(
+      { ...baseRow, originating_house: null },
+      now
+    );
+
+    expect(item.originatingHouse).toBeNull();
+    expect(item.originatingHouseLabel).toBeNull();
+    expect(item.statusLabel).toBe("審議中");
+  });
+
   it("議案行をAPIレスポンス形式に変換する", () => {
     expect(toOpenDataBillItem(baseRow, now)).toEqual({
       billId: "123e4567-e89b-12d3-a456-426614174000",

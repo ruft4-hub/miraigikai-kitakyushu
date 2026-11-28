@@ -48,6 +48,14 @@ export async function renderBillBreakingNewsImage(
   }
 
   // 賛否は呼び出し側から受け取らず DB の公開中の値だけを使う(未公開の賛否を画像に出さないため)
+  if (bill.originating_house === null) {
+    return {
+      ok: false,
+      reason: "invalid_input",
+      message: "地方議会向けの速報画像生成にはまだ対応していません",
+    };
+  }
+
   const publishedStance = params.includeStance
     ? toBreakingNewsStance(await getStanceByBillId(bill.id), new Date())
     : null;

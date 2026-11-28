@@ -90,13 +90,19 @@ export default async function BillEditPage({ params }: BillEditPageProps) {
           allTags={allTags}
           selectedTagIds={selectedTagIds}
         />
-        <BreakingNewsImageGenerator
-          billId={bill.id}
-          originatingHouse={bill.originating_house}
-          proposalType={bill.proposal_type}
-          defaultTitle={normalTitle || bill.name}
-          publishedStance={toBreakingNewsStance(stance, new Date())}
-        />
+        {bill.originating_house !== null ? (
+          <BreakingNewsImageGenerator
+            billId={bill.id}
+            originatingHouse={bill.originating_house}
+            proposalType={bill.proposal_type}
+            defaultTitle={normalTitle || bill.name}
+            publishedStance={toBreakingNewsStance(stance, new Date())}
+          />
+        ) : (
+          <p className="text-sm text-gray-600">
+            地方議会向けの速報画像生成は準備中です。
+          </p>
+        )}
       </div>
     </div>
   );

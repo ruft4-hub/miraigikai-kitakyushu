@@ -32,7 +32,7 @@ export type ComingSoonBill = {
   id: string;
   name: string; // 正式名称
   title: string | null; // わかりやすいタイトル（bill_contentsから）
-  originating_house: HouseEnum;
+  originating_house: HouseEnum | null;
   shugiin_url: string | null;
 };
 

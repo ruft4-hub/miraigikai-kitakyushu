@@ -23,7 +23,7 @@ const billBaseSchema = z.object({
     "enacted",
     "rejected",
   ]),
-  originating_house: z.enum(["HR", "HC"]),
+  originating_house: z.enum(["HR", "HC"]).nullable(),
   proposal_type: z
     .enum(["cabinet", "member", "mayor", "committee"])
     .nullable()

@@ -29,7 +29,7 @@ export function BillCreateForm({ dietSessions }: BillCreateFormProps) {
     defaultValues: {
       name: "",
       status: "preparing",
-      originating_house: "HR",
+      originating_house: null,
       proposal_type: null,
       status_note: null,
       submitted_date: new Date().toLocaleDateString("sv-SE", {

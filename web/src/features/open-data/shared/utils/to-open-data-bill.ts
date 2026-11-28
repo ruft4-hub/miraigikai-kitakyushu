@@ -23,7 +23,7 @@ export type OpenDataBillRow = {
   name: string;
   status: BillStatusEnum;
   status_note: string | null;
-  originating_house: HouseEnum;
+  originating_house: HouseEnum | null;
   submitted_date: string | null;
   published_at: string | null;
   created_at: string;
@@ -50,7 +50,9 @@ export function toOpenDataBillItem(
     statusLabel: getBillStatusLabel(row.status, row.originating_house),
     statusNote: row.status_note,
     originatingHouse: row.originating_house,
-    originatingHouseLabel: HOUSE_LABELS[row.originating_house],
+    originatingHouseLabel: row.originating_house
+      ? HOUSE_LABELS[row.originating_house]
+      : null,
     submittedDate: row.submitted_date,
     publishedAt: row.published_at,
     tags: row.bills_tags.flatMap((billTag) =>
