@@ -14,10 +14,26 @@ describe("BillProposalTypeBadge", () => {
     );
   });
 
-  it("議員立法は「議員立法」をグレーの枠で出す", () => {
+  it("議員提出は「議員提出」をグレーの枠で出す", () => {
     render(<BillProposalTypeBadge proposalType="member" />);
 
-    expect(screen.getByText("議員立法")).toHaveClass(
+    expect(screen.getByText("議員提出")).toHaveClass(
+      "border-mirai-border",
+      "text-mirai-text-note"
+    );
+  });
+
+  it("市長提出をグリーンの枠で出す", () => {
+    render(<BillProposalTypeBadge proposalType="mayor" />);
+    expect(screen.getByText("市長提出")).toHaveClass(
+      "border-primary",
+      "text-primary-accent"
+    );
+  });
+
+  it("委員会提出をグレーの枠で出す", () => {
+    render(<BillProposalTypeBadge proposalType="committee" />);
+    expect(screen.getByText("委員会提出")).toHaveClass(
       "border-mirai-border",
       "text-mirai-text-note"
     );

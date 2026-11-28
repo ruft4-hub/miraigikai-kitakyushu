@@ -173,7 +173,7 @@ export function BillFormFields({
           name="proposal_type"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>法案の種類</FormLabel>
+              <FormLabel>提出区分</FormLabel>
               <Select
                 onValueChange={(value) =>
                   field.onChange(
@@ -200,7 +200,7 @@ export function BillFormFields({
                 </SelectContent>
               </Select>
               <FormDescription>
-                内閣が提出した閣法か、議員が提出した議員立法かを選択してください。未設定の場合は公開サイトや速報画像に表示しません
+                議案の提出区分を選択してください。未設定の場合は公開サイトや速報画像に表示しません
               </FormDescription>
               <FormMessage />
             </FormItem>

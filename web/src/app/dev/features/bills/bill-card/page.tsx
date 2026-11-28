@@ -16,6 +16,18 @@ export default function BillCardPreview() {
     thumbnail_url: SAMPLE_THUMBNAIL,
   });
 
+  const mayorBill = createMockBill({
+    id: "mock-mayor",
+    proposal_type: "mayor",
+    thumbnail_url: SAMPLE_THUMBNAIL,
+  });
+
+  const committeeBill = createMockBill({
+    id: "mock-committee",
+    proposal_type: "committee",
+    thumbnail_url: SAMPLE_THUMBNAIL,
+  });
+
   const featuredBill = createMockBill({
     id: "mock-featured",
     is_featured: true,
@@ -83,10 +95,28 @@ export default function BillCardPreview() {
 
       <ComponentShowcase
         title="Member Bill"
-        description="議員立法はステータスの横にグレー枠のタグを出す"
+        description="議員提出はステータスの横にグレー枠のタグを出す"
       >
         <PreviewSection label="proposal_type: member">
           <BillCard bill={memberBill} />
+        </PreviewSection>
+      </ComponentShowcase>
+
+      <ComponentShowcase
+        title="Mayor Bill"
+        description="市長提出はグリーン枠のタグを出す"
+      >
+        <PreviewSection label="proposal_type: mayor">
+          <BillCard bill={mayorBill} />
+        </PreviewSection>
+      </ComponentShowcase>
+
+      <ComponentShowcase
+        title="Committee Bill"
+        description="委員会提出はグレー枠のタグを出す"
+      >
+        <PreviewSection label="proposal_type: committee">
+          <BillCard bill={committeeBill} />
         </PreviewSection>
       </ComponentShowcase>
 

@@ -154,12 +154,12 @@ describe("parseBreakingNewsImageInput", () => {
     });
   });
 
-  it("議員立法なら種類のラベルを議員立法にする", () => {
+  it("議員提出なら種類のラベルを議員提出にする", () => {
     const parsed = parseBreakingNewsImageInput({
       ...VALID_PARAMS,
       proposalType: "member",
     });
-    expect(parsed.ok && parsed.proposalTypeLabel).toBe("議員立法");
+    expect(parsed.ok && parsed.proposalTypeLabel).toBe("議員提出");
   });
 
   it("種類が未設定なら種類のラベルを null にする", () => {

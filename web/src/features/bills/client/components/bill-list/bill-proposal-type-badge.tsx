@@ -9,6 +9,8 @@ import { cn } from "@/lib/utils";
 const PROPOSAL_TYPE_BADGE_CLASS_NAMES: Record<BillProposalType, string> = {
   cabinet: "border-primary bg-white text-primary-accent",
   member: "border-mirai-border bg-white text-mirai-text-note",
+  mayor: "border-primary bg-white text-primary-accent",
+  committee: "border-mirai-border bg-white text-mirai-text-note",
 };
 
 interface BillProposalTypeBadgeProps {

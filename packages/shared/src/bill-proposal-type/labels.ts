@@ -5,5 +5,7 @@ export type BillProposalType =
 
 export const BILL_PROPOSAL_TYPE_LABELS: Record<BillProposalType, string> = {
   cabinet: "閣法",
-  member: "議員立法",
+  member: "議員提出",
+  mayor: "市長提出",
+  committee: "委員会提出",
 };
